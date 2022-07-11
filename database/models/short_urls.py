@@ -10,5 +10,6 @@ class UrlStore(me.Document):
     created_at = me.fields.LongField(required=True)
 
     meta = {
-        'collection': 'url_store'
+        'collection': 'url_store',
+        'indexes': ['short_url_code']
     }
