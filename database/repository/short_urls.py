@@ -47,3 +47,11 @@ class UrlStoreRepository:
         except Exception as e:
             print(
                 f'failed to register link click for url-code : {short_url_code}  with Exception as {e}')
+
+    def get_original_url_data_from_code(self, url_code: str) -> dict:
+        try:
+            original_url = UrlStore.objects(short_url_code=url_code).get().to_mongo().to_dict()
+            return original_url
+        except Exception as e:
+            print(e)
+            return {}
