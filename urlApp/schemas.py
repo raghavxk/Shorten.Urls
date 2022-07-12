@@ -1,10 +1,5 @@
-from selectors import BaseSelector
-
-
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class PostReqBody(BaseModel):
     url: str
-
-
