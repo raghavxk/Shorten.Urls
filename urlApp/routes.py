@@ -1,7 +1,6 @@
 from database.repository.short_urls import UrlStoreRepository
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
-from requests import Response
 from utils import hash
 
 from urlApp import schemas
@@ -47,4 +46,44 @@ def handler_create_url(
             'msg': 'failed to register url'
         },
             status_code=status.HTTP_406_NOT_ACCEPTABLE
+        )
+
+
+@router.get("/{short_url_code}")
+def handler_get_url_stats(short_url_code: str):
+    """
+    Route : GET /url/{shortUrlCode}
+    -> returns complete data for supplemented short url code
+    """
+    try:
+        print(short_url_code)
+        url_data = UrlStoreRepository().get_original_url_data_from_code(url_code=short_url_code)
+        print(url_data)
+        if not url_data:
+            return JSONResponse(
+                content={
+                    'msg': 'requested url code does not exist'
+                },
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+
+        return JSONResponse(
+            content={
+                'data': {
+                    'shortUrlCode': url_data.get('_id'),
+                    'originalUrl': url_data.get('original_url'),
+                    'hourWiseClickCount': url_data.get('hour_wise_click_count'),
+                    'countryWiseClickCount': url_data.get('country_wise_click_count')
+                },
+            },
+            status_code=status.HTTP_200_OK
+        )
+    except Exception as e:
+        print(e)
+        return JSONResponse(
+            content={
+                'success': False,
+                'msg': 'failed to fetch data for provided url code'
+            },
+            status_code=status.HTTP_404_NOT_FOUND
         )

@@ -58,3 +58,6 @@ class UrlStoreRepository:
         except Exception as e:
             print(e)
             return {}
+
+    def __del__(self):
+        self.connection.close()
