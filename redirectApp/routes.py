@@ -22,6 +22,9 @@ def handler_redirect(short_url_code: str, request: Request):
         if not url_to_redirect_to:
             return Response(status_code=status.HTTP_404_NOT_FOUND)
 
+        header_ip_forward = request.headers.get('x-forwarded-for')
+        print(header_ip_forward)
+
         url_to_redirect_to = urls.sanitise_url_for_redirect(url_to_redirect_to)
         service.save_click_data(
             ip_of_request=request.client.host, short_url_code=short_url_code)
