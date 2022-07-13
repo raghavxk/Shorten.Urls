@@ -1,3 +1,4 @@
+from http import client
 from urllib.request import Request
 
 from database.repository.short_urls import UrlStoreRepository
@@ -22,9 +23,11 @@ def handler_redirect(short_url_code: str, request: Request):
         if not url_to_redirect_to:
             return Response(status_code=status.HTTP_404_NOT_FOUND)
 
+        client_ip = request.headers.get('x-forwarded-for')
+
         url_to_redirect_to = urls.sanitise_url_for_redirect(url_to_redirect_to)
         service.save_click_data(
-            ip_of_request=request.client.host, short_url_code=short_url_code)
+            ip_of_request=client_ip, short_url_code=short_url_code)
         return Response(
             headers={"Location": f"{url_to_redirect_to}"},
             status_code=status.HTTP_307_TEMPORARY_REDIRECT
