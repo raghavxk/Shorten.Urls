@@ -10,6 +10,8 @@ def get_country(ip: str) -> Optional[str]:
     """
     resp = requests.get(url=f"https://ipinfo.io/{ip}/json?token={API_TOKEN}")
     if resp.status_code//10 == 20:
+        if 'bogon' in resp.json():
+            return "DEV"
         return resp.json()['country']
     else:
         return None
