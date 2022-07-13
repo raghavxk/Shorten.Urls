@@ -22,7 +22,7 @@ class UrlStoreRepository:
         This function is used to add new urls to db.
         """
         url_store_data = UrlStore(
-            short_url_code=short_url_code, original_url=original_url, created_at=int(time.time()*1000))
+            short_url_code=short_url_code, original_url=original_url, created_at=int(time.time()))
         try:
             saved_url_data = UrlStore.objects().insert(url_store_data)
             return saved_url_data.to_mongo().to_dict()
@@ -49,6 +49,9 @@ class UrlStoreRepository:
                 f'failed to register link click for url-code : {short_url_code}  with Exception as {e}')
 
     def get_original_url_data_from_code(self, url_code: str) -> dict:
+        """
+        This function returns complete data using short_code.
+        """
         try:
             original_url = UrlStore.objects(short_url_code=url_code).get().to_mongo().to_dict()
             return original_url
