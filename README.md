@@ -1,6 +1,6 @@
 # Shorten.URls
 
-- ### This is a web-app is URL-Shortener + Ananlysis app.
+- ### This is a URL-Shortener + Ananlysis web-app.
 - ### Features : 
     - users can shorten their URL by providing their own urls.
     - users can get analysis of how their URL is being shared.
