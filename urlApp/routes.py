@@ -56,9 +56,7 @@ def handler_get_url_stats(short_url_code: str):
     -> returns complete data for supplemented short url code
     """
     try:
-        print(short_url_code)
         url_data = UrlStoreRepository().get_original_url_data_from_code(url_code=short_url_code)
-        print(url_data)
         if not url_data:
             return JSONResponse(
                 content={

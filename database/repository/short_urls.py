@@ -43,12 +43,16 @@ class UrlStoreRepository:
         try:
             UrlStore.objects(short_url_code=short_url_code).update_one(__raw__={
                 "$inc": {
-                    "click_count": 1,
+                    "total_click_count": 1,
                     f"click_data.total_clicks": 1,
                     f"click_data.countries.{country_code}.total_clicks": 1,
                     f"click_data.countries.{country_code}.regions.{region_name}.total_clicks": 1,
-                    f"click_data.countries.{country_code}.regions.{region_name}.{city_name}": 1
+                    f"click_data.countries.{country_code}.regions.{region_name}.{city_name}": 1,
+                    f"hour_wise_click_count.{hour_of_click}": 1
                 },
+                "$set": {
+                    "updated_at": int(time.time())
+                }
             }, upsert=False)
         except Exception as e:
             print(
