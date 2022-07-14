@@ -18,3 +18,7 @@ Access API documentation here : [PostMan Documentation](https://documenter.getpo
 - build out frontend to graphically present analysis.
 
 Contributions are always welcome!!!
+
+### Notes : 
+- timestamps are in seconds.
+- all timestamps are Epoch Unix Timstamp(UTC).
