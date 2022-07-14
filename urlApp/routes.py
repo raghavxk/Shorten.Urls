@@ -70,8 +70,9 @@ def handler_get_url_stats(short_url_code: str):
                 'data': {
                     'shortUrlCode': url_data.get('_id'),
                     'originalUrl': url_data.get('original_url'),
+                    'totalClickCount': url_data.get('total_click_count'),
+                    'clickData': url_data.get('click_data'),
                     'hourWiseClickCount': url_data.get('hour_wise_click_count'),
-                    'countryWiseClickCount': url_data.get('country_wise_click_count')
                 },
             },
             status_code=status.HTTP_200_OK
