@@ -21,28 +21,38 @@ class UrlStoreRepository:
         """
         This function is used to add new urls to db.
         """
-        url_store_data = UrlStore(
-            short_url_code=short_url_code, original_url=original_url, created_at=int(time.time()))
+        url_data = UrlStore(
+            short_url_code=short_url_code, original_url=original_url, created_at=int(time.time()), updated_at=int(time.time()))
         try:
-            saved_url_data = UrlStore.objects().insert(url_store_data)
+            saved_url_data = UrlStore.objects().insert(url_data)
             return saved_url_data.to_mongo().to_dict()
         except Exception as e:
             print(
                 f"Failed to add URL : {original_url} to db with exception as {e}")
             return {}
 
-    def register_url_hit(self, short_url_code: str, country_code: str, hour_of_click: int) -> None:
+    def register_url_hit(self, short_url_code: str, country_code: str, region_name: str, city_name: str, hour_of_click: int) -> None:
         """
         This function updates db-entries for link-clicks.
         """
+
+        country_code = country_code if country_code else "UNKNOWN_COUNTRY"
+        region_name = region_name if region_name else "UNKNOWN_REGION"
+        city_name = city_name if city_name else "UNKNOWN_CITY"
+
         try:
             UrlStore.objects(short_url_code=short_url_code).update_one(__raw__={
                 "$inc": {
-                    "click_count": 1,
-                    f"country_wise_click_count.{country_code}": 1,
+                    "total_click_count": 1,
+                    f"click_data.total_clicks": 1,
+                    f"click_data.countries.{country_code}.total_clicks": 1,
+                    f"click_data.countries.{country_code}.regions.{region_name}.total_clicks": 1,
+                    f"click_data.countries.{country_code}.regions.{region_name}.{city_name}": 1,
                     f"hour_wise_click_count.{hour_of_click}": 1
-
                 },
+                "$set": {
+                    "updated_at": int(time.time())
+                }
             }, upsert=False)
         except Exception as e:
             print(
@@ -53,7 +63,8 @@ class UrlStoreRepository:
         This function returns complete data using short_code.
         """
         try:
-            original_url = UrlStore.objects(short_url_code=url_code).get().to_mongo().to_dict()
+            original_url = UrlStore.objects(
+                short_url_code=url_code).get().to_mongo().to_dict()
             return original_url
         except Exception as e:
             print(e)

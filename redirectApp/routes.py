@@ -26,8 +26,11 @@ def handler_redirect(short_url_code: str, request: Request):
         client_ip = request.headers.get('x-forwarded-for')
 
         url_to_redirect_to = urls.sanitise_url_for_redirect(url_to_redirect_to)
-        service.save_click_data(
-            ip_of_request=client_ip, short_url_code=short_url_code)
+
+        if client_ip:
+            service.save_click_data(
+                ip_of_request=client_ip, short_url_code=short_url_code)
+
         return Response(
             headers={"Location": f"{url_to_redirect_to}"},
             status_code=status.HTTP_307_TEMPORARY_REDIRECT
