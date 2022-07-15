@@ -15,6 +15,8 @@ Access API documentation here : [PostMan Documentation](https://documenter.getpo
 
 ### Future Development Ideas:
 - allow users to get custom shortended URLs.
+- introduce Redis caching for better performance.
+- integrate Celery for processing tasks asynchronously(outside of request-response cycle).
 - build out frontend to graphically present analysis.
 
 Contributions are always welcome!!!
