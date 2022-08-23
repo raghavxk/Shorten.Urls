@@ -31,7 +31,8 @@ class UrlStoreRepository:
                 f"Failed to add URL : {original_url} to db with exception as {e}")
             return {}
 
-    def register_url_hit(self, short_url_code: str, country_code: str, region_name: str, city_name: str, hour_of_click: int) -> None:
+    def register_url_hit(self, short_url_code: str, country_code: str, region_name: str, city_name: str,
+                         hour_of_click: str) -> None:
         """
         This function updates db-entries for link-clicks.
         """
